@@ -1,25 +1,31 @@
 import { useState } from "react";
 
 const Form = () => {
-  const [title, setTitle] = useState("");
+
+  const [formData, setFormData] = useState({
+    title: "",
+  });
+
   const [list, setList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    if (title.trim()) {
+    if (formData.title.trim()) {
       if (isEditing) {
         const updatedList = list.map((item, i) =>
-          i === editIndex ? title : item
-        )
+          i === editIndex ? formData.title : item
+        );
         setList(updatedList);
         setIsEditing(false);
         setEditIndex(null);
       } else {
-        setList([...list, title]);
+        setList([...list, formData.title]);
       }
-      setTitle("");
+      setFormData({
+        title: ""
+      });
     }
   };
 
@@ -29,7 +35,9 @@ const Form = () => {
   };
 
   const handlerEdit = (index) => {
-    setTitle(list[index]);
+    setFormData({
+      title: list[index],
+    });
     setIsEditing(true);
     setEditIndex(index);
   };
@@ -42,8 +50,12 @@ const Form = () => {
           type="text"
           className="form-control"
           placeholder="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={formData.title}
+          onChange={(e) =>
+            setFormData({
+              title: e.target.value,
+            })
+          }
         />
       </div>
 
@@ -53,20 +65,16 @@ const Form = () => {
 
       <ul className="list-group">
         {list.map((item, index) => (
-
           <li key={index} className="list-group-item d-flex justify-content-between">
             <span>{item}</span>
             <div>
-              <span className="delete m-3" onClick={() => handlerDelete(index)}>❌</span>
-              <span className="edit m-3" onClick={() => handlerEdit(index)}>✏️</span>
+              <span className="delete m-3" onClick={() => handlerDelete(index)}> ❌ </span>
+              <span className="edit m-3" onClick={() => handlerEdit(index)}> ✏️ </span>
             </div>
           </li>
         ))}
       </ul>
-
-
-
-    </form>
+    </form >
   );
 };
 
