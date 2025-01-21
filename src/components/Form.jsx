@@ -7,11 +7,18 @@ const Form = () => {
     image: "",
     category: "",
     tags: [],
+    published: false,
   });
 
   const [list, setList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+
+  useEffect(() => {
+    if (formData.published) {
+      alert("Hai scelto di pubblicare l'articolo!");
+    }
+  }, [formData.published]);
 
   const handlerSubmit = (e) => {
     e.preventDefault();
@@ -31,7 +38,8 @@ const Form = () => {
         content: "",
         image: "",
         category: "",
-        tags: []
+        tags: [],
+        published: false,
       });
     }
   };
@@ -140,7 +148,12 @@ const Form = () => {
       <div>
         <label className="form-label">Pubblicato</label>
         <input
+          className="m-3"
           type="checkbox"
+          checked={formData.published}
+          onChange={(e) =>
+            setFormData({ ...formData, published: e.target.checked })
+          }
         />
       </div>
 
